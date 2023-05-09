@@ -1,0 +1,320 @@
+-- Puppyhome SQL
+
+-- 테이블 삭제
+DROP TABLE tbl_member CASCADE CONSTRAINTS;
+DROP TABLE tbl_product CASCADE CONSTRAINTS;
+DROP TABLE tbl_like CASCADE CONSTRAINTS;
+DROP TABLE tbl_basket CASCADE CONSTRAINTS;
+DROP TABLE tbl_review CASCADE CONSTRAINTS;
+DROP TABLE tbl_review_img CASCADE CONSTRAINTS;
+DROP TABLE tbl_order CASCADE CONSTRAINTS;
+DROP TABLE tbl_client CASCADE CONSTRAINTS;
+
+-- 변경사항 저장
+commit;
+
+-- 멤버 테이블
+CREATE TABLE tbl_member(
+   user_id varchar2(100) primary key -- 회원 아이디
+   , user_no number(38)  not null -- 회원 수(unique)
+   , user_pwd varchar2(100) NOT NULL -- 회원 비밀번호
+   , user_name varchar2(100) NOT NULL -- 회원 이름
+   , user_birth varchar2(100) NOT NULL -- 회원 생년월일
+   , postcode varchar2(100) NOT NULL -- 회원 우편번호
+   , roadAddr varchar2(100) NOT NULL -- 회원 도로명 주소
+   , detailAddr varchar2(100) -- 회원 상세 주소
+   , user_email varchar2(100) NOT NULL -- 회원 이메일
+   , user_phone varchar2(100) NOT NULL -- 회원 휴대폰번호
+   , user_state number(38) default 0 -- 회원 0, 탈퇴회원 `1
+   , user_grade number(38) default 0 -- 사용자 등급(일반 사용자 0, 관리자 1)
+   , user_black number(38) default 0 -- 블랙리스트 여부(일반 사용자 0, 블랙회원 1)
+   , user_date date -- 가입 날짜(sysdate)
+);
+insert into tbl_member (user_no, user_id,user_pwd,user_name,user_birth,postCode,roadAddr,detailAddr,user_email,user_phone) 
+values(user_no_seq.nextval,'test1','1234','효광이','901111','24507','강원도','102','sdoigsodhg@naver.com','01012345678');
+commit;
+
+-- 멤버 시퀀스
+create sequence user_no_seq
+    start with 1
+    increment by 1
+    nocache;
+-- 멤버 테이블 조회
+select * from tbl_member;
+-- 저장
+commit;
+
+--더미데이터 관리자계정
+insert into tbl_member values('admin', 0, '1234', 'name', '930309', '12345', '서울시 강남구', '1101호', 'admin@test.com', '010-0000-0000', 0, 1, 0, sysdate);
+--더미데이터 : 페이징을 위한 데이터
+insert into tbl_member values('test01', 1, '1234', 'name', '930309', '12345', '서울시 강남구', '1101호', 'test@test.com', '010-0000-0000', 0, 0, 0, sysdate);
+insert into tbl_member values('test02', 2, '1234', 'name', '930309', '12345', '서울시 강남구', '1101호', 'test@test.com', '010-0000-0000', 0, 0, 0, sysdate);
+insert into tbl_member values('test03', 3, '1234', 'name', '930309', '12345', '서울시 강남구', '1101호', 'test@test.com', '010-0000-0000', 0, 0, 0, sysdate);
+insert into tbl_member values('test04', 4, '1234', 'name', '930309', '12345', '서울시 강남구', '1101호', 'test@test.com', '010-0000-0000', 0, 0, 0, sysdate);
+insert into tbl_member values('test05', 5, '1234', 'name', '930309', '12345', '서울시 강남구', '1101호', 'test@test.com', '010-0000-0000', 0, 0, 0, sysdate);
+insert into tbl_member values('test06', 6, '1234', 'name', '930309', '12345', '서울시 강남구', '1101호', 'test@test.com', '010-0000-0000', 0, 0, 0, sysdate);
+insert into tbl_member values('test07', 7, '1234', 'name', '930309', '12345', '서울시 강남구', '1101호', 'test@test.com', '010-0000-0000', 0, 0, 0, sysdate);
+insert into tbl_member values('test08', 8, '1234', 'name', '930309', '12345', '서울시 강남구', '1101호', 'test@test.com', '010-0000-0000', 0, 0, 0, sysdate);
+insert into tbl_member values('test09', 9, '1234', 'name', '930309', '12345', '서울시 강남구', '1101호', 'test@test.com', '010-0000-0000', 0, 0, 0, sysdate);
+insert into tbl_member values('test10', 10, '1234', 'name', '930309', '12345', '서울시 강남구', '1101호', 'test@test.com', '010-0000-0000', 0, 0, 0, sysdate);
+insert into tbl_member values('test11', 11, '1234', 'name', '930309', '12345', '서울시 강남구', '1101호', 'test@test.com', '010-0000-0000', 0, 0, 0, sysdate);
+insert into tbl_member values('test12', 12, '1234', 'name', '930309', '12345', '서울시 강남구', '1101호', 'test@test.com', '010-0000-0000', 0, 0, 0, sysdate);
+
+-- 상품 테이블
+CREATE TABLE tbl_product(
+    product_no   number(38) not null -- 상품 글 번호
+    , product_title varchar2(100) NOT NULL primary key -- 상품 명
+    , product_price number(38) NOT NULL -- 상품 가격
+    , product_maker varchar2(100) NOT NULL -- 제조사
+    , product_type varchar2(100) NOT NULL -- 분류
+    , product_cont varchar2(4000) NOT NULL -- 상품 내용(사진)
+    , product_star number(38) default 0 -- 상품 별점
+    , product_date date -- 상품 등록 날짜(sysdate)
+);
+
+drop table tbl_product;
+
+
+-- 더미데이터 
+insert into tbl_product values(1, '상품명01','1000', '제조사01', '퍼피', '사진', 5, sysdate);
+insert into tbl_product values(2, '상품명02','2000', '제조사02', '퍼피', '사진', 5, sysdate);
+insert into tbl_product values(3, '상품명03', '3000', '제조사03',  '퍼피', '사진', 5, sysdate);
+insert into tbl_product values(4, '상품명04', '1000', '제조사04', '퍼피', '사진', 5, sysdate);
+insert into tbl_product values(5, '상품명05', '5000', '제조사05',  '퍼피', '사진', 5, sysdate);
+insert into tbl_product values(6, '상품명06', '6000', '제조사06', '퍼피', '사진', 5, sysdate);
+
+-- 상품 시퀀스
+create sequence product_seq
+    start with 1
+    increment by 1
+    nocache;
+    
+drop sequence product_seq;    
+
+-- 상품 테이블 조회
+select * from tbl_product;
+-- 저장
+commit;
+
+
+-- 찜 테이블
+CREATE TABLE tbl_like (
+   like_no   number(38) primary key -- 찜 글 번호
+   , product_no number(38) references tbl_product (product_no) on delete cascade -- 상품 글 번호(fk)
+   , user_id varchar2(100) NOT NULL -- 회원 아이디(fk)
+);
+-- 찜 시퀀스
+create sequence like_seq
+    start with 1
+    increment by 1
+    nocache;
+-- 찜 테이블 외래키 제약조건 설정
+ALTER TABLE tbl_like
+   ADD CONSTRAINT fk_tbl_like FOREIGN KEY (user_id)
+       REFERENCES tbl_member (user_id) ON DELETE CASCADE;
+-- 찜 테이블 조회
+select * from tbl_like;
+-- 저장
+commit;
+
+
+-- 장바구니 테이블
+CREATE TABLE tbl_basket (
+   basket_no number(38) primary key -- 장바구니 글 번호
+   , basket_cnt number(38) NOT NULL -- 장바구니에 담은 수량
+   , product_no number(38)   references tbl_product (product_no) on delete cascade -- 상품 글 번호(fk)
+   , user_id varchar2(100)   NOT NULL -- 회원 아이디(fk)
+);
+-- 장바구니 시퀀스
+create sequence basket_seq
+    start with 1
+    increment by 1
+    nocache;
+-- 장바구니 테이블 외래키 제약조건 설정
+ALTER TABLE tbl_like
+   ADD CONSTRAINT fk_tbl_basket FOREIGN KEY (user_id)
+       REFERENCES tbl_member (user_id) ON DELETE set null;
+-- 장바구니 테이블 조회
+select * from tbl_basket;
+-- 저장
+commit;
+
+
+-- 리뷰 테이블
+CREATE TABLE tbl_review (
+   review_no number(38) primary key -- 리뷰 글 번호
+   , review_date date -- 리뷰 작성 날짜(sysdate)
+   , review_cont varchar2(4000) NOT NULL -- 리뷰 내용
+   , review_star number(38) NOT NULL -- 리뷰 별점
+   , product_no number(38)   references tbl_product (product_no) on delete cascade -- 상품 글 번호(fk)
+   , user_id varchar2(100)   NOT NULL -- 회원 아이디(fk)
+);
+-- 리뷰 시퀀스
+create sequence user_seq
+    start with 1
+    increment by 1
+    nocache;
+-- 리뷰 테이블 외래키 제약조건 설정
+ALTER TABLE tbl_like
+   ADD CONSTRAINT fk_tbl_review FOREIGN KEY (user_id)
+       REFERENCES tbl_member (user_id) ON DELETE set null;
+-- 리뷰 테이블 조회
+select * from tbl_review;
+-- 저장
+commit;
+
+
+-- 리뷰 이미지 테이블
+CREATE TABLE tbl_review_img (
+   reviewImg_no number(38) primary key -- 리뷰 글 이미지 번호
+   , reviewImg_ori varchar2(500) -- 리뷰 글 원본 이름
+   , reviewImg_sys varchar2(500) -- 리뷰 글 변화 이름
+   , review_no number(38) references tbl_review (review_no) on delete cascade -- 리뷰 글 번호(fk)
+   , user_id varchar2(100) -- 회원 아이디(fk)
+);
+-- 리뷰 이미지 시퀀스
+create sequence reviewImg_seq
+    start with 1
+    increment by 1
+    nocache;
+-- 리뷰 이미지 테이블 외래키 제약조건 설정
+ALTER TABLE tbl_like
+   ADD CONSTRAINT fk_tbl_review_img FOREIGN KEY (user_id)
+       REFERENCES tbl_member (user_id) ON DELETE set null;
+-- 리뷰 이미지 테이블 조회
+select * from tbl_review_img;
+-- 저장
+commit;
+
+
+-- 주문(결제) 테이블
+CREATE TABLE tbl_order (
+   order_no number(38) primary key -- 주문 번호
+   , order_date date -- 주문 날짜(sysdate)
+   , user_id varchar2(50) not null --유저 아이디
+   , order_rec varchar2(50) not null --수령인
+   , postcode varchar2(100) NOT NULL -- 회원 우편번호
+   , roadAddr varchar2(100) NOT NULL -- 회원 도로명 주소
+   , detailAddr varchar2(100) -- 회원 상세 주소
+   , user_email varchar2(100) -- 회원 이메일
+   , user_phone varchar2(100) NOT NULL -- 회원 휴대폰번호
+   , product_title varchar2(200)  references tbl_product (product_title) on delete cascade -- 상품명(fk)
+   , product_price number(38) -- 상품 가격
+   , order_cnt number(38) --상품 개수
+   , total_price number(38) --총액
+);
+
+-- 주문(결제) 시퀀스
+create sequence order_seq
+    start with 1
+    increment by 1
+    nocache;
+
+-- 주문(결제) 테이블 외래키 제약조건 설정
+ALTER TABLE tbl_order
+   ADD CONSTRAINT fk_tbl_order FOREIGN KEY (user_id)
+       REFERENCES tbl_member (user_id) ON DELETE set null;
+
+insert into tbl_order values(order_seq.nextval, sysdate,'test2', '홍길동', '06555', '서울시 강남구', '102호', 'dfg@naver.com', '01012345678', '상품명01', 10000, 2, 20000);
+insert into tbl_order values(order_seq.nextval, sysdate,'test2', '홍길동', '06555', '서울시 강남구', '102호', 'dfg@naver.com', '01012345678', '상품명02', 30000, 2, 60000);
+insert into tbl_order values(order_seq.nextval, sysdate,'test2', '홍길동', '06555', '서울시 강남구', '102호', 'dfg@naver.com', '01012345678', '상품명03', 10000, 3, 30000);
+insert into tbl_order values(order_seq.nextval, sysdate,'test2', '홍길동', '06555', '서울시 강남구', '102호', 'dfg@naver.com', '01012345678', '상품명04', 30000, 4, 120000);
+insert into tbl_order values(order_seq.nextval, sysdate,'test2', '홍길동', '06555', '서울시 강남구', '102호', 'dfg@naver.com', '01012345678', '상품명05', 50000, 1, 50000);
+
+commit;
+
+-- 주문(결제) 테이블 조회
+select * from tbl_order;
+select order_no, product_title, order_date, order_cnt, product_title, product_price, total_price from tbl_order where user_id ='test2';
+
+
+
+
+       
+
+
+drop table tbl_order;    
+drop sequence order_seq;    
+    
+
+--주문 상세 테이블
+create table tbl_order_details (
+    order_Details_no number(38) not null primary key
+    , orderId         varchar2(50) not null
+    , gdsNum          number          not null
+    , cartStock       number          not null
+);
+
+-- 주문 상세 테이블 시퀀스
+create sequence order_details_seq;
+
+--주문 상세 테이블 유저ID FK
+alter table tbl_order_details
+   ADD CONSTRAINT fk_tbl_order FOREIGN KEY (user_id)
+       REFERENCES tbl_member (user_id) ON DELETE set null;
+
+drop table tbl_order;
+drop sequence order_seq;
+
+
+SELECT A.user_id, A.order_date, B., B.재고수량 재고수량 
+	FROM TableA as A       
+    	LEFT JOIN TableB as B   
+    	ON A.상품코드 = B.상품코드
+-- 저장
+commit;
+
+-- 고객 게시판 테이블
+CREATE TABLE tbl_client (
+   client_no number(38) primary key -- 고객 문의 글 번호
+    , client_title varchar2(100) NOT NULL -- 고객 문의 글 제목
+    , client_cont varchar2(4000) NOT NULL -- 고객 문의 글 내용
+    , client_category varchar2(50) NOT NULL -- 회원정보, 상품확인, 주문/결제, 배송, 교환/취소/반품, 서비스
+    , client_date date -- 고객 문의 글 작성 날짜(sysdate)
+    , client_ref     NUMBER(38) --원본글과 답변글을 묶어주는그룹번호 역할
+    , client_step    NUMBER(38) -- NO 게시판 넘버링
+    , client_level   NUMBER(38) --답변글 정렬순서
+    ,user_id varchar2(100) not null -- 회원아이디(fk)
+);
+
+drop table tbl_client;
+
+-- 고객 게시판 시퀀스
+create sequence client_seq
+    start with 1
+    increment by 1
+    nocache;
+    
+-- 고객 게시판 테이블 외래키 제약조건 설정
+ALTER TABLE tbl_like
+   ADD CONSTRAINT fk_tbl_client FOREIGN KEY (user_id)
+       REFERENCES tbl_member (user_id) ON DELETE set null;
+    
+-- 고객 게시판 테이블 조회
+select * from tbl_client order by client_no;
+-- 저장
+commit;
+
+-- 더미데이터
+INSERT into tbl_client VALUES(1, '홍길동입니다.', '불편하네요.', '상품확인', sysdate, 1,1,1,'user_01');
+INSERT into tbl_client VALUES(2, '제목02.', '불편쓰', '회원정보', sysdate, 1,1,1,'user_02');
+INSERT into tbl_client VALUES(3, '제목03', '언제오나요?', '배송', sysdate, 1,1,1,'user_03');
+INSERT into tbl_client VALUES(4, '제목04', '교환되나요?', '교환/취소/반품', sysdate, 1,1,1,'user_04');
+INSERT into tbl_client VALUES(5, '제목05', '왜 이건 안해주시나요?', '서비스', sysdate,1,1,1,'user_05');
+
+create table tbl_client_reply(
+    client_no number(38) not null
+    ,client_reply_cont varchar2(4000) not null
+    ,CONSTRAINT tbl_client_reply_client_no_fk foreign key(client_no) REFERENCES tbl_client(client_no)
+);
+
+-- 생성
+select * from tbl_client_reply;
+
+insert into tbl_client_reply values(1, '하이');
+
+commit;
+
+select * from tbl_client where client_no=1;
+
+select tbl_client.client_no,client_category, user_id, client_title, client_cont, client_reply_cont from tbl_client inner join tbl_client_reply on (tbl_client.client_no = tbl_client_reply.client_no) where tbl_client.client_no=1;

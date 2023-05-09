@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  <display-name>Puppyhome</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  
+  <!-- 매핑구조를 하나의 서블릿에서 다수의 매핑구조가 실행되게 함 => 1대 다 설정 -->
+  <servlet>
+  	<servlet-name>FrontController</servlet-name> <!-- 서블릿 클래스명 -->
+  	<servlet-class>shop.puppyhome.controller.FrontController</servlet-class> <!-- 풀 패키지 경로 -->
+  </servlet>
+
+  <servlet-mapping>
+	<servlet-name>FrontController</servlet-name>
+	<url-pattern>*.shop</url-pattern> <!-- 브라우저 주소창에서 실행되는 주소값인 매핑주소이다. 즉 주소창에서 *.shop(이건 마음대로)이 실행되면 
+	shop.puppyhome.controller패키지의 FrontController서블릿 클래스가 실행된다. -->
+  </servlet-mapping>
+</web-app>
+
+
+
+
+
+
+
+
+
+
+
